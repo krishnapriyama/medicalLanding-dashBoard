@@ -1,11 +1,18 @@
-import React from 'react';
-import Navbar from './Navbar';
-import Sidebar from './Sidebar';
-import { Outlet } from 'react-router-dom';
+import React, { useEffect } from "react";
+import Navbar from "./Navbar";
+import Sidebar from "./Sidebar";
+import { Outlet, useNavigate } from "react-router-dom";
 
 const Layout = () => {
+  const token = localStorage.getItem("accessToken");
+  const navigate = useNavigate();
 
-  const token = localStorage.getItem("accessToken")
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, [token, navigate]);
+
 
   return (
     <div className="flex flex-auto h-screen">
@@ -13,7 +20,7 @@ const Layout = () => {
       <div className="grow">
         <Navbar />
         <div className="m-5">
-          {token && <Outlet />}
+          <Outlet />
         </div>
       </div>
     </div>
